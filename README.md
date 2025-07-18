@@ -1,99 +1,68 @@
 
-# Laboratórios Zero Trust com IaC e Containers
+# Laboratório Zero Trust com IaC – Visão Geral
 
-Este pacote contém dois laboratórios práticos voltados à aplicação de conceitos de Zero Trust em ambientes provisionados com Infrastructure as Code (IaC) e containers.
+Este laboratório demonstra a evolução de um ambiente tradicional exposto para um ambiente seguro com Zero Trust,
+usando Docker, Terraform, Ansible, Checkov e Twingate.
 
----
-
-## 📦 Estrutura do Pacote
+## Estrutura
 
 ```
-labs/
-├── lab1_credenciais/
-│   ├── docker-compose.yml
-│   ├── authelia/
-│   ├── vault/
-│   ├── app/
-│   ├── ansible/
-│   └── terraform/
-├── lab2_rede/
-│   ├── docker-compose.yml
-│   ├── terraform/
-│   ├── guacamole_keycloak/
-│   └── glpi_mariadb/
-├── .env.example
-├── Checklist_Execucao_Minicurso_ZeroTrust_v2.txt
-└── README.md
+lab-zero-trust-final/
+├── etapa1-docker/       # Docker Compose
+├── etapa2-terraform/    # Terraform IaC
+├── etapa3-ansible/      # Hardening + Checkov + Twingate Verificação
+├── exemplos/            # Política YAML
+```
+
+## Requisitos
+
+| Ferramenta | Versão |
+|-----------|--------|
+| Docker | 20.10+ |
+| Terraform | 1.5+ |
+| Ansible | 2.15+ |
+| Checkov | latest (`pip install checkov`) |
+| Twingate | conta + client |
+
+## Execução
+
+### Etapa 1 – Docker Compose
+
+```bash
+cd etapa1-docker
+docker-compose up -d
+# Acesse http://localhost:8080
+```
+
+### Etapa 2 – Terraform
+
+```bash
+cd etapa2-terraform
+terraform init
+terraform apply -var="twingate_connector_token=seu_token_aqui"
+```
+
+### Etapa 3 – Ansible
+
+```bash
+cd etapa3-ansible
+ansible-playbook -i inventory.ini playbook.yml
+```
+
+- Executa validação com Checkov (opcional)
+- Aplica hardening no GLPI
+- Verifica se o Twingate está funcionando
+
+### Limpeza
+
+```bash
+cd etapa2-terraform
+terraform destroy -auto-approve
+
+cd etapa1-docker
+docker-compose down -v
 ```
 
 ---
 
-## ✅ Lab 1: Gerenciamento de Credenciais com Vault + Authelia
-
-### Objetivo:
-- Demonstrar autenticação forte com Authelia
-- Gerenciar segredos com Vault
-- Usar uma aplicação Flask como cliente seguro
-
-### Como Executar:
-1. Copie `.env.example` para `.env` e ajuste se necessário.
-2. Acesse o diretório `lab1_credenciais/`.
-3. Execute o provisionamento via Terraform (em `terraform/`):
-   ```
-   terraform init
-   terraform apply
-   ```
-4. Execute o playbook Ansible (em `ansible/`):
-   ```
-   ansible-playbook playbook.yml
-   ```
-5. Inicie os serviços:
-   ```
-   docker-compose up -d
-   ```
-
----
-
-## 🔐 Lab 2: Segmentação de Rede com Keycloak + Guacamole + GLPI
-
-### Objetivo:
-- Demonstrar acesso remoto controlado com Guacamole
-- Implementar autenticação e SSO com Keycloak
-- Integrar com sistema GLPI + MariaDB como alvo de acesso remoto
-
-### Como Executar:
-1. Copie `.env.example` para `.env`.
-2. Acesse o diretório `lab2_rede/`.
-3. Execute o provisionamento com Terraform:
-   ```
-   terraform init
-   terraform apply
-   ```
-4. Inicie os containers:
-   ```
-   docker-compose up -d
-   ```
-
----
-
-## ⚙️ Requisitos
-
-- Docker
-- Docker Compose
-- Terraform
-- Ansible
-- Git (para clonar o repositório, se necessário)
-
----
-
-## 📋 Checklist de Execução
-
-Consulte o arquivo `Checklist_Execucao_Minicurso_ZeroTrust_v2.txt` para um passo a passo guiado.
-
----
-
-## 🧪 Extensões Futuras
-
-- Autenticação via authentik
-- Integração com Twingate ou Teleport
-- Deploy via pipelines CI/CD
+Gerado em: 2025-07-04 18:32
