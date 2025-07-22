@@ -9,6 +9,10 @@ resource "docker_container" "mariadb" {
   image = docker_image.mariadb.name
 
   restart = "unless-stopped"
+  networks_advanced {
+    name = docker_network.minicurso-net.name
+  }
+
 
   env = [
     "MYSQL_ROOT_PASSWORD=secret",

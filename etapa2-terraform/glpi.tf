@@ -23,4 +23,8 @@ resource "docker_container" "glpi" {
   }
 
   restart = "unless-stopped"
+  networks_advanced {
+    name = docker_network.minicurso-net.name
+  }
+
 }

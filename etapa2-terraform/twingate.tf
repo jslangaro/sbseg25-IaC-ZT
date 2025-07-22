@@ -14,4 +14,8 @@ resource "docker_container" "twingate_connector" {
     "TWINGATE_ACCESS_TOKEN=${var.twingate_connector_token}"
   ]
   restart = "unless-stopped"
+  networks_advanced {
+    name = docker_network.minicurso-net
+  }
+
 }

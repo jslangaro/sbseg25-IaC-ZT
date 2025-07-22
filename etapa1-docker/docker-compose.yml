@@ -1,4 +1,3 @@
-version: "3.8"
 services:
   mariadb:
     image: mariadb:10.11
@@ -11,6 +10,8 @@ services:
       MYSQL_PASSWORD: glpipass
     volumes:
       - db_data:/var/lib/mysql
+    networks:
+      - minicurso-net
 
   glpi:
     image: diouxx/glpi
@@ -25,12 +26,17 @@ services:
     ports:
       - "8080:80"
     restart: unless-stopped
+    networks:
+     - minicurso-net
 
   backup:
     build:
       context: ./backup
     container_name: lab-zero-trust-backup
     command: ["sleep", "infinity"]
+    networks:
+     - minicurso-net
+
 
   ansible:
     build:
@@ -39,6 +45,14 @@ services:
     volumes:
       - ../etapa3-ansible:/ansible
     command: ["sleep", "infinity"]
+    networks:
+     - minicurso-net
+
 
 volumes:
   db_data:
+networks:
+  minicurso-net:
+   driver:
+     bridge
+

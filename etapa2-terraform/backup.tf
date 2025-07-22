@@ -9,4 +9,8 @@ resource "docker_container" "backup" {
   image = docker_image.backup.name
   command = ["sleep", "infinity"]
   restart = "unless-stopped"
+  networks_advanced {
+    name = docker_network.minicurso-net.name
+  }
+
 }

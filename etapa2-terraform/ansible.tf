@@ -1,7 +1,7 @@
 
 # ----- Ansible Controller -----
 resource "docker_image" "ansible" {
-  name = "williamyeh/ansible:alpine3"
+  name = "alpinelinux/ansible"
 }
 
 resource "docker_container" "ansible" {
@@ -16,4 +16,7 @@ resource "docker_container" "ansible" {
 }
 
   restart = "unless-stopped"
+  networks_advanced {
+    name = docker_network.minicurso-net.name
+  }
 }
