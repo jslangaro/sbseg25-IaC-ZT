@@ -11,6 +11,8 @@ services:
       MYSQL_PASSWORD: glpipass
     volumes:
       - db_data:/var/lib/mysql
+    networks:
+      - minicurso-net
 
   glpi:
     image: diouxx/glpi
